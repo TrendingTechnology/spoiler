@@ -105,7 +105,7 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
         child: Column(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
                     onTap: toggle,
@@ -116,35 +116,42 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
                             : _buildDefaultHeader())),
               ],
             ),
-            StreamBuilder<bool>(
-                stream: isReady,
-                initialData: false,
-                builder: (context, snapshot) {
-                  if (snapshot.data) {
-                    return AnimatedBuilder(
-                      animation:
-                          animation != null ? animation : animationController,
-                      builder: (BuildContext context, Widget child) =>
-                          Container(
-                        height: animation.value > 0 ? animation.value : 0,
-                        child: Wrap(
-                          children: <Widget>[
-                            widget.child != null ? widget.child : Container()
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Container(
-                      key: _childKey,
-                      child: Wrap(
-                        children: <Widget>[
-                          widget.child != null ? widget.child : Container()
-                        ],
-                      ),
-                    );
-                  }
-                }),
+            Row(
+              children: <Widget>[
+                StreamBuilder<bool>(
+                    stream: isReady,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      if (snapshot.data) {
+                        return AnimatedBuilder(
+                          animation: animation != null
+                              ? animation
+                              : animationController,
+                          builder: (BuildContext context, Widget child) =>
+                              Container(
+                            height: animation.value > 0 ? animation.value : 0,
+                            child: Wrap(
+                              children: <Widget>[
+                                widget.child != null
+                                    ? widget.child
+                                    : Container()
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          key: _childKey,
+                          child: Wrap(
+                            children: <Widget>[
+                              widget.child != null ? widget.child : Container()
+                            ],
+                          ),
+                        );
+                      }
+                    }),
+              ],
+            ),
           ],
         ),
       );
