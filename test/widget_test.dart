@@ -34,11 +34,13 @@ void main() {
       final SpoilerState state = tester.state(find.byWidget(widget));
 
       expect(state.isOpened, isFalse);
+      expect(state.animation.value, equals(0));
 
       await tester.tap(find.byKey(Key('header')));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(state.isOpened, isTrue);
+      expect(state.animation.value, isPositive);
 
       expect(find.text('context'), findsOneWidget);
     });
