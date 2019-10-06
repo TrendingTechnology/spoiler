@@ -100,25 +100,28 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
   final GlobalKey _childKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) => Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            Row(
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            onTap: toggle,
+            child: Row(
+              key: Key('header'),
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                GestureDetector(
-                    onTap: toggle,
-                    child: Container(
-                        key: Key('header'),
-                        child: widget.header != null
-                            ? widget.header
-                            : _buildDefaultHeader())),
+                Expanded(
+                  child: widget.header != null
+                      ? widget.header
+                      : _buildDefaultHeader(),
+                ),
               ],
             ),
-            Row(
-              children: <Widget>[
-                StreamBuilder<bool>(
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: StreamBuilder<bool>(
                     stream: isReady,
                     initialData: false,
                     builder: (context, snapshot) {
@@ -150,16 +153,17 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
                         );
                       }
                     }),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       );
 
   Widget _buildDefaultHeader() => StreamBuilder<bool>(
       stream: isOpen,
       initialData: isOpened,
       builder: (context, snapshot) => Container(
+          margin: EdgeInsets.all(10),
           height: 20,
           width: 20,
           child: Center(
