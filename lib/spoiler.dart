@@ -106,48 +106,40 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
         children: <Widget>[
           GestureDetector(
             onTap: toggle,
-            child: Row(
+            child: Container(
               key: Key('header'),
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                widget.header != null ? widget.header : _buildDefaultHeader(),
-              ],
+              child:
+                  widget.header != null ? widget.header : _buildDefaultHeader(),
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              StreamBuilder<bool>(
-                  stream: isReady,
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    if (snapshot.data) {
-                      return AnimatedBuilder(
-                        animation:
-                            animation != null ? animation : animationController,
-                        builder: (BuildContext context, Widget child) =>
-                            Container(
-                          height: animation.value > 0 ? animation.value : 0,
-                          child: Wrap(
-                            children: <Widget>[
-                              widget.child != null ? widget.child : Container()
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Container(
-                        key: _childKey,
-                        child: Wrap(
-                          children: <Widget>[
-                            widget.child != null ? widget.child : Container()
-                          ],
-                        ),
-                      );
-                    }
-                  }),
-            ],
-          ),
+          StreamBuilder<bool>(
+              stream: isReady,
+              initialData: false,
+              builder: (context, snapshot) {
+                if (snapshot.data) {
+                  return AnimatedBuilder(
+                    animation:
+                        animation != null ? animation : animationController,
+                    builder: (BuildContext context, Widget child) => Container(
+                      height: animation.value > 0 ? animation.value : 0,
+                      child: Wrap(
+                        children: <Widget>[
+                          widget.child != null ? widget.child : Container()
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    key: _childKey,
+                    child: Wrap(
+                      children: <Widget>[
+                        widget.child != null ? widget.child : Container()
+                      ],
+                    ),
+                  );
+                }
+              }),
         ],
       );
 
