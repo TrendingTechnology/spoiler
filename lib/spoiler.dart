@@ -19,8 +19,8 @@ class Spoiler extends StatefulWidget {
       this.child,
       this.isOpened = false,
       this.duration,
-      this.openCurve = Curves.linear,
-      this.closeCurve = Curves.linear});
+      this.openCurve = Curves.fastLinearToSlowEaseIn,
+      this.closeCurve = Curves.fastOutSlowIn});
 
   @override
   SpoilerState createState() => SpoilerState();
