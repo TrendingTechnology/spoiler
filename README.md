@@ -17,3 +17,4 @@ child: Spoiler(
  - [ ] On open callback with header height and child height arguments.
  - [ ] On close callback with header height and child height arguments.
  - [ ] Get only header height for spoiler in spoiler widgets.
+ - [ ] Make Spoilers widget with calback that has all headers height and  all childs height.
