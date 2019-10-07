@@ -18,3 +18,5 @@ child: Spoiler(
  - [ ] On close callback with header height and child height arguments.
  - [ ] Get only header height for spoiler in spoiler widgets.
  - [ ] Make Spoilers widget with calback that has all headers height and  all childs height.
+ - [ ] Add `reverse` parameter for change order of header and child.
+ - [ ] Add horizontal spoiler widget.
