@@ -14,10 +14,13 @@ class Spoiler extends StatefulWidget {
 
   final Duration duration;
 
+  final bool waitFirstCloseAnimationBeforeOpen;
+
   const Spoiler(
       {this.header,
       this.child,
       this.isOpened = false,
+      this.waitFirstCloseAnimationBeforeOpen = false,
       this.duration,
       this.openCurve = Curves.easeOutExpo,
       this.closeCurve = Curves.easeInExpo});
@@ -26,7 +29,7 @@ class Spoiler extends StatefulWidget {
   SpoilerState createState() => SpoilerState();
 }
 
-class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
+class SpoilerState extends State<Spoiler> with SingleTickerProviderStateMixin {
   double childHeight;
 
   AnimationController animationController;
@@ -56,23 +59,34 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
             : Duration(milliseconds: 400),
         vsync: this);
 
+    animation = CurvedAnimation(
+        parent: animationController,
+        curve: widget.openCurve,
+        reverseCurve: widget.closeCurve);
+
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       childHeight = _childKey.currentContext.size.height;
-
-      animation = CurvedAnimation(
-          parent: animationController,
-          curve: widget.openCurve,
-          reverseCurve: widget.closeCurve);
 
       animation =
           Tween(begin: 0.toDouble(), end: childHeight).animate(animation);
 
       isReadyController.add(true);
 
-      if (!this.animationController.isDismissed) {
-        isOpened
-            ? await animationController.forward().orCancel
-            : await animationController.reverse().orCancel;
+      try {
+        if (widget.waitFirstCloseAnimationBeforeOpen) {
+          isOpened
+              ? await animationController.forward().orCancel
+              : await animationController
+                  .forward()
+                  .orCancel
+                  .whenComplete(() => animationController.reverse().orCancel);
+        } else {
+          isOpened
+              ? await animationController.forward().orCancel
+              : await animationController.reverse().orCancel;
+        }
+      } on TickerCanceled {
+        // the animation got canceled, probably because we were disposed
       }
     });
   }
@@ -91,11 +105,9 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
 
       isOpenController.add(isOpened);
 
-      if (!this.animationController.isDismissed) {
-        isOpened
-            ? await animationController.forward().orCancel
-            : await animationController.reverse().orCancel;
-      }
+      isOpened
+          ? await animationController.forward().orCancel
+          : await animationController.reverse().orCancel;
     } on TickerCanceled {
       // the animation got canceled, probably because we were disposed
     }
@@ -122,8 +134,7 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
               builder: (context, snapshot) {
                 if (snapshot.data) {
                   return AnimatedBuilder(
-                    animation:
-                        animation != null ? animation : animationController,
+                    animation: animation,
                     builder: (BuildContext context, Widget child) => Container(
                       height: animation.value > 0 ? animation.value : 0,
                       child: Wrap(
