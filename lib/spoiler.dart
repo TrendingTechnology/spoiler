@@ -19,8 +19,8 @@ class Spoiler extends StatefulWidget {
       this.child,
       this.isOpened = false,
       this.duration,
-      this.openCurve = Curves.fastLinearToSlowEaseIn,
-      this.closeCurve = Curves.fastOutSlowIn});
+      this.openCurve = Curves.easeOutExpo,
+      this.closeCurve = Curves.easeInExpo});
 
   @override
   SpoilerState createState() => SpoilerState();
@@ -53,7 +53,7 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
     animationController = AnimationController(
         duration: widget.duration != null
             ? widget.duration
-            : Duration(milliseconds: 400),
+            : Duration(milliseconds: 600),
         vsync: this);
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
