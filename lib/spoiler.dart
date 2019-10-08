@@ -53,10 +53,10 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
     animationController = AnimationController(
         duration: widget.duration != null
             ? widget.duration
-            : Duration(milliseconds: 600),
+            : Duration(milliseconds: 400),
         vsync: this);
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       childHeight = _childKey.currentContext.size.height;
 
       animation = CurvedAnimation(
@@ -69,9 +69,11 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
 
       isReadyController.add(true);
 
-      isOpened
-          ? animationController.forward().orCancel
-          : animationController.reverse().orCancel;
+      if (!this.animationController.isDismissed) {
+        isOpened
+            ? await animationController.forward().orCancel
+            : await animationController.reverse().orCancel;
+      }
     });
   }
 
@@ -89,9 +91,11 @@ class SpoilerState extends State<Spoiler> with TickerProviderStateMixin {
 
       isOpenController.add(isOpened);
 
-      isOpened
-          ? await animationController.forward().orCancel
-          : await animationController.reverse().orCancel;
+      if (!this.animationController.isDismissed) {
+        isOpened
+            ? await animationController.forward().orCancel
+            : await animationController.reverse().orCancel;
+      }
     } on TickerCanceled {
       // the animation got canceled, probably because we were disposed
     }
