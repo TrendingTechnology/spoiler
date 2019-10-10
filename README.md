@@ -11,6 +11,8 @@ child: Spoiler(
             child: GameControl()
 ```
 
+![Spoiler preview gif](/preview/preview.gif)
+
 ## TODO:
  - [x] Custom header. 
  - [ ] Custom open header and custom close header.
