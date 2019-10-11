@@ -8,5 +8,5 @@ jobs:
       - uses: actions/checkout@v1
       - uses: axel-op/dart_package_analyzer@stable
         with:
-          githubToken: ${{ secrets.bdd915b48b83ee5bb3a3b3107287db6e7ca94b63 }}
+          githubToken: ${{ secrets.Analyzer }}
           maxScoreToComment: 99.99
