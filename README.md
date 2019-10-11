@@ -2,6 +2,8 @@
 
 Spoiler widget for flutter.
 
+[![Actions Status](https://github.com/Hecatoncheir/spoiler/workflows/flutter/badge.svg)](https://github.com/Hecatoncheir/spoiler/actions)
+
 ## HowTo:
 ```dart
 child: Spoiler(
