@@ -17,5 +17,8 @@ jobs:
         channel: 'dev' # optional, default to: 'stable'
     - run: flutter pub get
     - run: flutter test --coverage
+    - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+    - run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
+    - run: dart-codemetrics --begin-warning-complexity-number=4 --begin-error-complexity-number=8
     - run: sudo apt install -y lcov
     - run: genhtml coverage/lcov.info -o coverage
