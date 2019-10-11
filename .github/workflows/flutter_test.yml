@@ -27,6 +27,7 @@ jobs:
     - run: sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
     - run: sudo apt-get update
     - run: sudo apt-get install dart
+    - run: export PATH=$PATH:/usr/lib/dart/bin
 
     - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
     - run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
