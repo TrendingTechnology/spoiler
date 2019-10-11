@@ -16,22 +16,16 @@ jobs:
         flutter-version: '1.9.x'
         channel: 'dev'
 
-    - run: flutter pub get
-    - run: flutter test --coverage
+    - name: Get packages
+      run: flutter pub get
 
-    - run: sudo apt install -y lcov
-    - run: genhtml coverage/lcov.info -o coverage
+    - name: Run tests
+      run: flutter test --coverage
 
-#    - run: sudo apt-get install apt-transport-https
-#    - run: sudo sh -c 'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-#    - run: sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-#    - run: sudo apt-get update
-#    - run: sudo apt-get install dart
-#    - run: export PATH=$PATH:/usr/lib/dart/bin
-#
-#    - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
-#    - run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
-#    - run: pub run dart-codemetrics --begin-warning-complexity-number=4 --begin-error-complexity-number=8
+    - name: Install lcov
+      run: sudo apt install -y lcov
+    - name: Prepare coverage
+      run: genhtml coverage/lcov.info -o coverage
 
   coverage:
 
@@ -42,7 +36,6 @@ jobs:
       image:  google/dart:latest
 
     steps:
-      - uses: actions/checkout@v1
       - name: Install codemetrics
         run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
       - name: Run codemetrics
