@@ -17,4 +17,11 @@ jobs:
         channel: 'dev' # optional, default to: 'stable'
     - run: flutter pub get
     - run: flutter test --coverage
-    - run: genhtml coverage/lcov.info -o coverage
+
+  coverage:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: coverallsapp/github-action
+      - run: genhtml coverage/lcov.info -o coverage
