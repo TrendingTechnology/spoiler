@@ -35,6 +35,7 @@ jobs:
 
   coverage:
 
+    needs: [test]
     runs-on: ubuntu-latest
 
     container:
@@ -44,7 +45,5 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install codemetrics
         run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
-      - run: touch pubspec.lock
-      - run: touch .packages
       - name: Run codemetrics
         run: pub run dart-codemetrics --begin-warning-complexity-number=4 --begin-error-complexity-number=8
