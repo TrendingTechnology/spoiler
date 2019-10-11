@@ -13,7 +13,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1.1.1
       with:
-        flutter-version: '1.7.x' # you can use 1.7
+        flutter-version: '1.9.x'
         channel: 'dev'
 
     - run: flutter pub get
@@ -44,5 +44,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install codemetrics
         run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
+      - run: touch pubspec.lock
       - name: Run codemetrics
         run: pub run dart-codemetrics --begin-warning-complexity-number=4 --begin-error-complexity-number=8
