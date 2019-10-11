@@ -15,6 +15,7 @@ jobs:
       with:
         flutter-version: '1.7.x' # you can use 1.7
         channel: 'dev' # optional, default to: 'stable'
+
     - run: flutter pub get
     - run: flutter test --coverage
 
@@ -24,9 +25,10 @@ jobs:
     - run: sudo apt-get install apt-transport-https
     - run: sudo sh -c 'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
     - run: sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-    - run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
     - run: sudo apt-get update
     - run: sudo apt-get install dart
+
     - run: export PATH="$PATH":"$HOME/.pub-cache/bin"
+    - run: pub global activate --source git https://github.com/Rasarts/codemetrics.git
     - run: pub run dart-codemetrics --begin-warning-complexity-number=4 --begin-error-complexity-number=8
 
